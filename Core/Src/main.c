@@ -258,7 +258,7 @@ int main(void)
     //DEBUG部分代码
 
     // 核心板上LED以1s为周期闪烁，表示程序正常运行
-    // HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin); 
+    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin); 
     
 
 
