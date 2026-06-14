@@ -1,0 +1,16 @@
+build/
+*.o
+*.obj
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+.settings/
+*.log
+*.tmp
+*.bak
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store
