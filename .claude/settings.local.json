@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:\\\\\\\\Users\\\\\\\\Wangxiao\\\\\\\\Desktop\\\\\\\\AUTO_SAIL_3\\\\\\\\User\\\\\\\\OLED\\\\\\\\Inc\" \"c:\\\\\\\\Users\\\\\\\\Wangxiao\\\\\\\\Desktop\\\\\\\\AUTO_SAIL_3\\\\\\\\User\\\\\\\\OLED\\\\\\\\Src\")",
+      "Bash(cmd.exe /c mkdir \"c:\\\\Users\\\\Wangxiao\\\\Desktop\\\\AUTO_SAIL_3\\\\User\\\\OLED\\\\Inc\" \"c:\\\\Users\\\\Wangxiao\\\\Desktop\\\\AUTO_SAIL_3\\\\User\\\\OLED\\\\Src\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Wangxiao\\Desktop\\AUTO_SAIL_3\\User\\OLED"
+    ]
+  }
+}

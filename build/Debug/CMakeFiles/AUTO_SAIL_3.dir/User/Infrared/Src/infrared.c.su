@@ -1,0 +1,4 @@
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:8:6:Infrared_Init	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:17:8:Infrared_CalcWeightSum	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:31:6:Infrared_ResetTriggerStatus	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:40:6:Infrared_SetTriggerStatus	16	static

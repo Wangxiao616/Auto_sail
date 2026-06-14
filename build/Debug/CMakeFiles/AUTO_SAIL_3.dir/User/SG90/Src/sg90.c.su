@@ -1,0 +1,7 @@
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:43:6:__SG90_SetDuty	24	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:56:6:SG90_Init	8	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:66:6:SG90_SetAngle	24	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:79:6:SG90_TurnLeft	8	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:87:6:SG90_TurnRight	8	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:95:6:SG90_Reset	8	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/SG90/Src/sg90.c:103:6:SG90_CalcTargetAngle	24	static
