@@ -1,4 +1,5 @@
 build/
+*.su
 *.o
 *.obj
 *.elf
@@ -15,3 +16,4 @@ build/
 Thumbs.db
 .DS_Store
 Git版本管理教程.md
+25年规则.pdf

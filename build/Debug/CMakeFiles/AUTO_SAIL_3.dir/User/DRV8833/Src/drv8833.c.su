@@ -1,8 +1,0 @@
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:30:20:__SetIn1PWM	16	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:39:20:__SetIn2PWM	16	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:47:6:DRV8833_Init	8	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:57:6:DRV8833_SetDecayMode	16	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:66:6:DRV8833_Forward	16	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:84:6:DRV8833_Backward	16	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:101:6:DRV8833_Brake	8	static
-C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/DRV8833/Src/drv8833.c:110:6:DRV8833_Coast	8	static
