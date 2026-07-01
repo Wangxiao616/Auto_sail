@@ -1,3 +1,5 @@
+# CHANGELOG
+
 4.13
 1.在CubeMX中将编译工具改为CMake
 2.在根目录中的CMakeLists.txt中添加了User目录的编译选项
@@ -149,4 +151,29 @@
   评估了邻居确认、方向优势两种抗反射策略，进行了39个场景推演验证
   方向优势策略在2真vs2反射场景下存在平局→直行的保守行为
   综合判断：原始加权逻辑配合正确的舵机方向系数已可满足当前需求，实际到场地下水测试发现反射情况没有太大影响，所以暂不更新红外逻辑
+
+---
+
+## 7.1 — `红外逻辑反射抗性分支`
+
+### 新增
+
+- **针对强反射情景的逻辑**：时间驱动的交替传感器遮蔽机制，应对水池壁红外反射干扰
+  - `IR_MaskSide` 枚举（IR_MASK_NONE / IR_MASK_LEFT / IR_MASK_RIGHT）
+  - `Infrared_SetMaskSide()` / `Infrared_GetMaskSide()` / `Infrared_IsSensorMasked()` API
+  - 三层防护：中断层过滤 → 状态设置层检查 → 加权计算层过滤
+
+### 修改
+
+- [infrared.h](User/Infrared/Inc/infrared.h)：新增遮蔽模式枚举和 API 声明
+- [infrared.c](User/Infrared/Src/infrared.c)：实现遮蔽判断逻辑，加权和计算跳过被遮蔽传感器
+- [main.c](Core/Src/main.c)：
+  - 新增可调参数 `MASK_PHASE_MS`（单侧遮蔽时长，默认 8000ms）和 `MASK_FIRST_RIGHT`（首遮蔽侧，默认 1=右侧）
+  - EXTI 回调中增加遮蔽过滤
+  - 主循环增加基于 Phase 的交替遮蔽逻辑
+  - OLED 底行显示 Phase 编号和遮蔽状态（ML/MR/--）
+
+### 文档
+
+- [README.md](README.md)：新增"针对强反射情景的逻辑"章节
 
