@@ -13,6 +13,12 @@ build/
 *.bak
 .vscode/
 *.swp
+# VSCode C/C++ 索引缓存
+*.idx
+*.id
+# Ninja 编译缓存日志
+.ninja_deps
+.ninja_log
 Thumbs.db
 .DS_Store
 Git版本管理教程.md

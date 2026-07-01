@@ -49,8 +49,9 @@
 #define IR_DEBOUNCE_MS 15U // 防抖时间（毫秒）用于中断回调函数
 
 /* ==== 反射抗性遮蔽参数 ==== */
-#define MASK_PHASE_MS       8000U   /* 单侧遮蔽持续时间（毫秒），根据门间时间调整 */
-#define MASK_FIRST_RIGHT    1       /* 1=先遮蔽右侧, 0=先遮蔽左侧（根据赛道S弯方向修改） */
+#define MASK_PHASE_MS        8000U  /* 单侧遮蔽持续时间（毫秒），根据门间时间调整 */
+#define MASK_UNMASK_GAP_MS   2000U  /* 遮蔽切换间的不遮蔽间隔（毫秒），用于船对准下一个门 */
+#define MASK_FIRST_RIGHT     1      /* 1=先遮蔽右侧, 0=先遮蔽左侧（根据赛道S弯方向修改） */
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -174,17 +175,24 @@ int main(void)
 
   while (1)
   {
-    /* ==== 反射抗性：时间驱动交替遮蔽 ==== */
+    /* ==== 反射抗性：时间驱动交替遮蔽（含不遮蔽间隔） ==== */
     uint32_t now = HAL_GetTick();
-    uint32_t phase = (now - mask_start_tick) / MASK_PHASE_MS;
+    uint32_t cycle_time = MASK_PHASE_MS + MASK_UNMASK_GAP_MS;
+    uint32_t elapsed   = now - mask_start_tick;
+    uint32_t cycle      = elapsed / cycle_time;
+    uint32_t in_cycle   = elapsed % cycle_time;
 
-    #if MASK_FIRST_RIGHT
-        /* 先遮蔽右侧: phase 0,2,4...遮蔽右侧, phase 1,3,5...遮蔽左侧 */
-        Infrared_SetMaskSide((phase & 1) ? IR_MASK_LEFT : IR_MASK_RIGHT);
-    #else
-        /* 先遮蔽左侧: phase 0,2,4...遮蔽左侧, phase 1,3,5...遮蔽右侧 */
-        Infrared_SetMaskSide((phase & 1) ? IR_MASK_RIGHT : IR_MASK_LEFT);
-    #endif
+    if (in_cycle < MASK_PHASE_MS) {
+        /* 遮蔽期 */
+        #if MASK_FIRST_RIGHT
+            Infrared_SetMaskSide((cycle & 1) ? IR_MASK_LEFT : IR_MASK_RIGHT);
+        #else
+            Infrared_SetMaskSide((cycle & 1) ? IR_MASK_RIGHT : IR_MASK_LEFT);
+        #endif
+    } else {
+        /* 不遮蔽间隔：全传感器工作，用于对准下一个门 */
+        Infrared_SetMaskSide(IR_MASK_NONE);
+    }
 
     /* 1. 计算红外加权和（被遮蔽传感器不参与） */
     int8_t weight_sum = Infrared_CalcWeightSum();
@@ -252,7 +260,7 @@ int main(void)
             case IR_MASK_RIGHT: mask_str = "MR"; break;
             default:            mask_str = "--"; break;
         }
-        sprintf(buf, "W:%d A:%d P%lu %s", weight_sum, target_angle, phase, mask_str);
+        sprintf(buf, "W:%d A:%d C%lu %s", weight_sum, target_angle, cycle, mask_str);
         OLED_ShowString(0, 48, buf, 12);
 
         OLED_Refresh();
