@@ -1,0 +1,7 @@
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:20:6:Infrared_Init	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:30:9:Infrared_IsSensorMasked	24	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:45:8:Infrared_CalcWeightSum	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:59:6:Infrared_ResetTriggerStatus	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:68:6:Infrared_SetTriggerStatus	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:77:6:Infrared_SetMaskSide	16	static
+C:/Users/Wangxiao/Desktop/AUTO_SAIL_3/User/Infrared/Src/infrared.c:83:13:Infrared_GetMaskSide	4	static

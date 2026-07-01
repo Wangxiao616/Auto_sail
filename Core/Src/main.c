@@ -47,6 +47,10 @@
     HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 100); \
 } while(0)
 #define IR_DEBOUNCE_MS 15U // 防抖时间（毫秒）用于中断回调函数
+
+/* ==== 反射抗性遮蔽参数 ==== */
+#define MASK_PHASE_MS       8000U   /* 单侧遮蔽持续时间（毫秒），根据门间时间调整 */
+#define MASK_FIRST_RIGHT    1       /* 1=先遮蔽右侧, 0=先遮蔽左侧（根据赛道S弯方向修改） */
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,8 +67,11 @@ volatile uint8_t ir_dbg_pending = 0;
 volatile uint8_t ir_dbg_idx = 0xFF;
 // 红外传感器调试掩码
 static const uint8_t ir_enable_mask[IR_SENSOR_NUM] = {
-    0,1,1,1,1,1,1,1,0   
+    0,1,1,1,1,1,1,1,0
 };
+
+/* ==== 反射抗性状态变量 ==== */
+static uint32_t mask_start_tick = 0;    /* 遮蔽计时起点（上电即开始） */
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,6 +100,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     //红外传感器调试代码
     if (!ir_enable_mask[idx]) return;
 
+    // 反射抗性：被遮蔽方向的传感器直接忽略，不触发
+    if (Infrared_IsSensorMasked(idx)) return;
+
     uint32_t now = HAL_GetTick();//获取当前时间戳
     if ((now - ir_last_tick[idx]) < IR_DEBOUNCE_MS) {
         return; // 防抖时间窗内，忽略抖动
@@ -104,7 +114,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 
     ir_last_tick[idx] = now;
-    
+
     if (ir_trigger_status[idx] == 0) { // 只有上一轮状态是0，才更新为1
 
         Infrared_SetTriggerStatus(idx, 1);
@@ -164,7 +174,19 @@ int main(void)
 
   while (1)
   {
-    /* 1. 计算红外加权和 */
+    /* ==== 反射抗性：时间驱动交替遮蔽 ==== */
+    uint32_t now = HAL_GetTick();
+    uint32_t phase = (now - mask_start_tick) / MASK_PHASE_MS;
+
+    #if MASK_FIRST_RIGHT
+        /* 先遮蔽右侧: phase 0,2,4...遮蔽右侧, phase 1,3,5...遮蔽左侧 */
+        Infrared_SetMaskSide((phase & 1) ? IR_MASK_LEFT : IR_MASK_RIGHT);
+    #else
+        /* 先遮蔽左侧: phase 0,2,4...遮蔽左侧, phase 1,3,5...遮蔽右侧 */
+        Infrared_SetMaskSide((phase & 1) ? IR_MASK_RIGHT : IR_MASK_LEFT);
+    #endif
+
+    /* 1. 计算红外加权和（被遮蔽传感器不参与） */
     int8_t weight_sum = Infrared_CalcWeightSum();
 
     /* 2. 计算目标舵机角度 */
@@ -223,8 +245,14 @@ int main(void)
             OLED_ShowString(0, 16, buf, 12);
         }
 
-        /* 底行显示权重和角度 */
-        sprintf(buf, "W:%d A:%d", weight_sum, target_angle);
+        /* 底行显示权重、角度和遮蔽状态 */
+        const char *mask_str;
+        switch (Infrared_GetMaskSide()) {
+            case IR_MASK_LEFT:  mask_str = "ML"; break;
+            case IR_MASK_RIGHT: mask_str = "MR"; break;
+            default:            mask_str = "--"; break;
+        }
+        sprintf(buf, "W:%d A:%d P%lu %s", weight_sum, target_angle, phase, mask_str);
         OLED_ShowString(0, 48, buf, 12);
 
         OLED_Refresh();
