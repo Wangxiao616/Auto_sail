@@ -168,10 +168,10 @@
 - [infrared.h](User/Infrared/Inc/infrared.h)：新增遮蔽模式枚举和 API 声明
 - [infrared.c](User/Infrared/Src/infrared.c)：实现遮蔽判断逻辑，加权和计算跳过被遮蔽传感器
 - [main.c](Core/Src/main.c)：
-  - 新增可调参数 `MASK_PHASE_MS`（单侧遮蔽时长，默认 8000ms）和 `MASK_FIRST_RIGHT`（首遮蔽侧，默认 1=右侧）
+  - 新增可调参数 `MASK_PHASE_MS`（单侧遮蔽时长，默认 8000ms）、`MASK_UNMASK_GAP_MS`（间隙时长，默认 2000ms）和 `MASK_FIRST_RIGHT`（首遮蔽侧，默认 1=右侧）
   - EXTI 回调中增加遮蔽过滤
-  - 主循环增加基于 Phase 的交替遮蔽逻辑
-  - OLED 底行显示 Phase 编号和遮蔽状态（ML/MR/--）
+  - 主循环增加基于 Cycle 的交替遮蔽 + 不遮蔽间隙逻辑
+  - OLED 底行显示 Cycle 编号和遮蔽状态（ML/MR/--）
 
 ### 文档
 
